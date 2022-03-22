@@ -1,0 +1,6 @@
+### 停机维护需要先关闭数据平衡
+    sudo ceph osd set noout
+    sudo ceph osd set norebalance
+    完毕后再开启
+    sudo ceph osd unset noout
+    sudo ceph osd unset norebalance
