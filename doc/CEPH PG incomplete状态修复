@@ -1,4 +1,4 @@
-PG检查
+## PG检查
 上面查看集群状态时，也可以发现pgs出现incomplete状态，执行health查看错误帮助。
 
 ceph health detail  
@@ -55,7 +55,7 @@ ceph-objectstore-tool是ceph提供的一个操作pg及pg里面的对象的高级
 
 
 
-1、查看incomplete pg所在osd节点
+### 1、查看incomplete pg所在osd节点
 
 ceph pg dump_stuck 
 ok
@@ -73,16 +73,16 @@ PG_STAT STATE      UP    UP_PRIMARY ACTING ACTING_PRIMARY
 1.2f    incomplete [0,3]          0  [0,3]              0 
 1.44    incomplete [0,3]          0  [0,3]              0 
 
-2、停止要操作的osd时，否则会得到报错：OSD has the store locked
+### 2、停止要操作的osd时，否则会得到报错：OSD has the store locked
 
  systemctl stop ceph-osd.target 
 
-3、导出pg和导入pg
+### 3、导出pg和导入pg
 
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --pgid 1.4d --op export --file 0.3
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --op import --file 0.3
 
-4、将pg标记为complete
+### 4、将pg标记为complete
 
 
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --type filestore --pgid 1.4d  --op mark-complete
@@ -90,7 +90,7 @@ WARNING: Ignoring type "filestore" - found data-path type "bluestore"
 Marking complete 
 Marking complete succeeded
 
-5、启动osd，osd启动后，检查osd进程是否存在，一般要等几分钟才能看到UP
+### 5、启动osd，osd启动后，检查osd进程是否存在，一般要等几分钟才能看到UP
 
 systemctl start ceph-osd.target   
 
@@ -129,7 +129,7 @@ ceph -s
 
 
 
-优雅停止ceph
+## 优雅停止ceph
 需要停机维护时，ceph一定要正常停止服务，尽量避免强制关机，拔电源等骚操作，物理机确认正常后再启动ceph，避免重复启动osd。
 
 
