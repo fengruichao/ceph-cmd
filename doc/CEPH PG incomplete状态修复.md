@@ -20,7 +20,7 @@ PG_AVAILABILITY Reduced data availability: 12 pgs inactive, 12 pgs incomplete
     pg 1.66 is incomplete, acting [0,3]
 
 ```
-
+```
 pg Incomplete状态出现的原因大多是因为ceph集群在peering过程中，频繁重启服务器或断电。
 
 启动osd或创建某个pg的时候,需要同步该pg上所有osd中的pg状态，这个过程叫做peering过程
@@ -53,7 +53,7 @@ ceph-objectstore-tool是ceph提供的一个操作pg及pg里面的对象的高级
 
 一般通过导出备份pg和导入pg，用于解决incomplete状态pg状态不对。
 
-
+```
 
 ### 1、查看incomplete pg所在osd节点
 ```
