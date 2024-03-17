@@ -2,6 +2,7 @@
 ## PG检查
 上面查看集群状态时，也可以发现pgs出现incomplete状态，执行health查看错误帮助。
 
+```
 ceph health detail  
 HEALTH_WARN Reduced data availability: 12 pgs inactive, 12 pgs incomplete; 12 slow ops, oldest one blocked for 5672 sec, daemons [osd.0,osd.3] have slow ops.
 PG_AVAILABILITY Reduced data availability: 12 pgs inactive, 12 pgs incomplete
@@ -18,7 +19,7 @@ PG_AVAILABILITY Reduced data availability: 12 pgs inactive, 12 pgs incomplete
     pg 1.61 is incomplete, acting [0,3]
     pg 1.66 is incomplete, acting [0,3]
 
-
+```
 
 pg Incomplete状态出现的原因大多是因为ceph集群在peering过程中，频繁重启服务器或断电。
 
@@ -37,10 +38,10 @@ incomplete状态系统是无法自动复原的，需要手动修复
 pg repair
 Ceph提供了使用ceph pg repair命令修复不一致的PG
 
-# ceph pg deep-scrub 11.eeef
+ceph pg deep-scrub 11.eeef
 instructing pg 11.eeef on osd.106 to deep-scrub
 
-# ceph pg repair 11.eeef
+ceph pg repair 11.eeef
 instructing pg 11.eeef on osd.106 to repair
 
 
