@@ -33,8 +33,6 @@ b. 通过choose_acting选出的Acting Set后续不足以完成数据修复，导
 
 incomplete状态系统是无法自动复原的，需要手动修复
 
-
-
 pg repair
 Ceph提供了使用ceph pg repair命令修复不一致的PG
 
@@ -58,7 +56,7 @@ ceph-objectstore-tool是ceph提供的一个操作pg及pg里面的对象的高级
 
 
 ### 1、查看incomplete pg所在osd节点
-
+```
 ceph pg dump_stuck 
 ok
 PG_STAT STATE      UP    UP_PRIMARY ACTING ACTING_PRIMARY 
@@ -74,26 +72,26 @@ PG_STAT STATE      UP    UP_PRIMARY ACTING ACTING_PRIMARY
 1.1     incomplete [3,0]          3  [3,0]              3 
 1.2f    incomplete [0,3]          0  [0,3]              0 
 1.44    incomplete [0,3]          0  [0,3]              0 
-
+```
 ### 2、停止要操作的osd时，否则会得到报错：OSD has the store locked
-
+```
  systemctl stop ceph-osd.target 
-
+```
 ### 3、导出pg和导入pg
-
+```
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --pgid 1.4d --op export --file 0.3
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --op import --file 0.3
-
+```
 ### 4、将pg标记为complete
 
-
+```
 ceph-objectstore-tool --data-path /var/lib/ceph/osd/ceph-02/ --journal-path /var/log/ceph/ --type filestore --pgid 1.4d  --op mark-complete
 WARNING: Ignoring type "filestore" - found data-path type "bluestore"
 Marking complete 
 Marking complete succeeded
-
+```
 ### 5、启动osd，osd启动后，检查osd进程是否存在，一般要等几分钟才能看到UP
-
+```
 systemctl start ceph-osd.target   
 
 ceph osd tree
@@ -130,10 +128,10 @@ ceph -s
     client:   341 B/s rd, 13 MiB/s wr, 0 op/s rd, 1.10 kop/s wr
 
 
-
+```
 ## 优雅停止ceph
 需要停机维护时，ceph一定要正常停止服务，尽量避免强制关机，拔电源等骚操作，物理机确认正常后再启动ceph，避免重复启动osd。
-
+```
 
 
 ceph osd set noout
@@ -144,3 +142,4 @@ systemctl stop ceph-mds.target
 systemctl stop ceph-mon.target
 systemctl stop ceph-radosgw.target  
 systemctl stop ceph-osd.target 
+```
